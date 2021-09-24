@@ -15,8 +15,8 @@ export default class Country extends Component{
     expand(){
         if(this.state.expandedFlag)
             return
-        this.setState({ expandedFlag: 1 }, () => this.props.clickHandleFunction(this.props.data.name.common))
-        
+        this.setState({ expandedFlag: 1 }, () => null)
+        this.props.clickHandleFunction(this.props.data.name.common)
     }
 
     render(){

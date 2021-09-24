@@ -158,8 +158,10 @@ export default class App extends Component{
     }
 
     expandCountry(country){
-        this.setState({ expandedCountry: true })
+        // this.setState({})
         this.searchCountries(country)
+        this.setState({expandedCountry: true }, () => this.searchCountries(country))
+        
     }
 
     reorganizeCountries(){
