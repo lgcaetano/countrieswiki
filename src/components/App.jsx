@@ -2,6 +2,9 @@ import React from "react";
 import { Component } from "react";
 import Country from "./Country";
 import SearchSort from "./SearchSort";
+import { BeatLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import TopBar from "./TopBar";
 
 function sortCountries(a, b){
     if(a.name.common == b.name.common)
@@ -49,13 +52,23 @@ function sortCountriesArea(a, b){
 export default class App extends Component{
 
     constructor(props){
+        
+        super(props)
+        
         const settings = {
             method: 'GET',
             timeout: 0
         }
-        super(props)
-        this.state = { expandedCountry: false }
-        fetch('https://restcountries.com/v3/all')
+
+        const loaderCss = css`
+        margin: auto auto;
+        grid-column: span 4;
+        position: relative;
+        top: 30vh;
+        `;
+
+        this.state = { expandedCountry: false, countriesComponents: <BeatLoader css={loaderCss} size={50}></BeatLoader>, darkMode: false }
+        fetch('https://restcountries.com/v3/all', settings)
             .then(response => response.json())
             // .then(response => console.log(response))
             .then(response => this.setState({ countriesArray: response.sort(sortCountries) }, () => this.organizeCountries()))
@@ -156,17 +169,21 @@ export default class App extends Component{
         })
     }
 
+    toggleDarkMode(){
+        this.setState({ darkMode: !this.state.darkMode })
+    }
+
     render(){
         // console.log(this.state.countriesComponents)
 
-        return <div>
-            
-            <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} 
+        return <div id="base" className={this.state.darkMode ? "dark-mode" : ""}>
+            <TopBar toggleFunction={() => this.toggleDarkMode()}/>
+            <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} darkMode={this.state.darkMode}
             onChange={e => this.filterCountries(e.value)} onChangeSort={e => this.orderCountries(e.value)}></SearchSort>
             
             <button id="go-back" className="box-shadow" 
             style={{ display: this.state.expandedCountry ? 'initial' : 'none' }}
-            onClick={() => this.reorganizeCountries()}><i class="fas fa-arrow-left"></i> Back</button>
+            onClick={() => this.reorganizeCountries()}><i className="fas fa-arrow-left"></i> Back</button>
             
             <div className="countries-grid">{this.state.countriesComponents}</div>
         </div>

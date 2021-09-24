@@ -15,8 +15,8 @@ export default class Country extends Component{
     expand(){
         if(this.state.expandedFlag)
             return
-        this.setState({ expandedFlag: 1 })
-        this.props.clickHandleFunction(this.props.data.name.common)
+        this.setState({ expandedFlag: 1 }, () => this.props.clickHandleFunction(this.props.data.name.common))
+        
     }
 
     render(){
@@ -33,7 +33,7 @@ export default class Country extends Component{
 
         let countryDomain = this.props.data.tld ? this.props.data.tld[0] : ""
 
-        return <div className={`countryCard ${this.state.expandedFlag ? "expanded-card" : ""}`} onClick={() => this.expand()}>
+        return <div className={`countryCard box-shadow ${this.state.expandedFlag ? "expanded-card" : ""}`} onClick={() => this.expand()}>
             <div className="img-container"><img src={this.props.data.flags[1]} alt="" /></div>
             <div className="country-description">
                 
