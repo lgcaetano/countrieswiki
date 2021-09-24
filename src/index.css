@@ -226,12 +226,12 @@ input:focus{
   height: 100%;
   position: relative;
   top: 25%;
-  animation: fadein 2s;
   /* width: 100%; */
   /* flex-grow: 1; */
 }
 
 .countryCard.expanded-card .img-container img{
+  animation: load-image 1s;
   min-height: 0px;
   /* max-height: 40px; */
   /* position: absolute; */
@@ -327,4 +327,16 @@ input:focus{
 
 .select-option:hover{
   cursor: pointer;
+}
+
+@keyframes load-image{
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
 }
