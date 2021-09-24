@@ -190,7 +190,7 @@ input:focus{
   /* align-self: flex-start; */
   /* margin-bottom: 40px; */
   grid-column: span 4;
-  grid-row: span 2;
+  /* grid-row: span 2; */
   grid-row-start: 0;
   height: calc(0px + 70vh);
   width: 100%;
@@ -225,7 +225,7 @@ input:focus{
   padding: 0%;
   height: 100%;
   position: relative;
-  top: 25%;
+  top: 12.5%;
   /* width: 100%; */
   /* flex-grow: 1; */
 }
@@ -236,8 +236,8 @@ input:focus{
   /* max-height: 40px; */
   /* position: absolute; */
   /* position: absolute; */
-  height: 70%;
-  width: auto;
+  height: auto;
+  width: 80%;
   /* top: 35%; */
   /* height: 30%; */
 }
@@ -261,6 +261,7 @@ input:focus{
   margin: 3px;
   border-radius: 3px;
   transition: 100ms;
+  padding: 3px;
 }
 
 .border-button:hover{
@@ -271,12 +272,20 @@ input:focus{
 
 
 #go-back{
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  text-justify: center;
+  line-height: 30px;
   width: 100px;
   height: 30px;
   border-radius: 3px;
   font-size: 1rem;
-  position: relative;
-  left: 20px;
+  position: absolute;
+  top: -20px;
+  z-index: 1;
+  /* align-self: flex-start; */
+  left: 0%;
   /* background: white; */
   font-family: 'Nunito sans';
   font-weight: 600;
@@ -338,5 +347,34 @@ input:focus{
   }
   100%{
     opacity: 1;
+  }
+}
+
+a{
+  text-decoration: none;
+  color:inherit;
+}
+
+@media (max-width: 900px){
+  .countries-grid{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .countryCard.expanded-card{
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 600px){
+  .countries-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+  .countryCard.expanded-card{
+    grid-column: span 2;
+  }
+  .countryCard.expanded-card .country-description {
+    justify-content: center;
+  }
+  .countryCard.expanded-card .country-description *:not(h5){
+    font-size: 0.7rem;
   }
 }

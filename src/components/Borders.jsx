@@ -1,5 +1,6 @@
 import React from "react";
 import { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class Borders extends Component{
     constructor(props){
@@ -11,9 +12,9 @@ export default class Borders extends Component{
                 
                 let countryName = this.props.getName(country)
 
-                return <button className="border-button" onClick={() => this.props.borderClick(countryName)} key={country}>
+                return <Link to={`/${country}`}className="border-button" onClick={() => this.props.borderClick(countryName)} key={country}>
                     {countryName}
-                </button>
+                </Link >
             })
         }
     }

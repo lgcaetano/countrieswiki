@@ -5,6 +5,7 @@ import SearchSort from "./SearchSort";
 import { BeatLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import TopBar from "./TopBar";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function sortCountries(a, b){
     if(a.name.common == b.name.common)
@@ -67,12 +68,13 @@ export default class App extends Component{
         top: 30vh;
         `;
 
-        this.state = { expandedCountry: false, countriesComponents: <BeatLoader css={loaderCss} size={50}></BeatLoader>, darkMode: false }
+        this.state = { expandedCountry: false, countriesComponents: <BeatLoader css={loaderCss} size={50}></BeatLoader>, darkMode: false, countriesArray: [] }
         fetch('https://restcountries.com/v3/all', settings)
             .then(response => response.json())
             // .then(response => console.log(response))
             .then(response => this.setState({ countriesArray: response.sort(sortCountries) }, () => this.organizeCountries()))
             .then(() => console.log((this.state.countriesArray[20])))
+            .then(() => this.generateRoutes())
         
             // console.log(this.state.countriesArray)
         
@@ -85,6 +87,30 @@ export default class App extends Component{
         region: sortCountriesRegions,
         area: sortCountriesArea
     }
+
+    generateRoutes(){
+
+        // console.log(this.state)
+
+
+        this.setState({ countriesRoutes: this.state.countriesArray.map(country => {
+
+            return <Route exact path={`/${country.cca3}`}>
+
+                <Link to="/" id="go-back" className="box-shadow"
+                    onClick={() => this.reorganizeCountries()}>
+                    <i className="fas fa-arrow-left"></i> Back
+                </Link>
+
+                <Country key={country.name.common} data={country}
+                clickHandleFunction={country => this.expandCountry(country)} countryShouldBeExpanded={true}
+                getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)} />
+
+            </Route>
+        }) })
+
+    }
+
 
     orderCountries(value){
         this.state.countriesArray.sort(this.sortFunctions[value])
@@ -121,7 +147,9 @@ export default class App extends Component{
         }).map(country => {
             return <Country key={country.name.common} data={country} 
             clickHandleFunction={country => this.expandCountry(country)}
-            getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)}></Country>
+            getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)}>
+                {this.expandCountry(country.name.common)}
+            </Country>
         })} )
     }
 
@@ -133,7 +161,8 @@ export default class App extends Component{
 
 
     organizeCountries(){
-        // console.log('HEY')
+        // console.log(this.state)
+
         this.setState({ countriesComponents: this.state.countriesArray.map(country => {
             return <Country key={country.name.common} data={country} 
             clickHandleFunction={country => this.expandCountry(country)}
@@ -158,15 +187,20 @@ export default class App extends Component{
     }
 
     expandCountry(country){
-        // this.setState({})
-        this.searchCountries(country)
-        this.setState({expandedCountry: true }, () => this.searchCountries(country))
+        // // this.setState({})
+        // this.searchCountries(country)
+        // this.setState({ expandedCountry: true }, () => this.searchCountries(country))
+        if(this.state.expandedCountry)
+            return
+        
+        console.log(this.state)
+        this.setState({ expandedCountry: true })
         
     }
 
     reorganizeCountries(){
 
-        this.setState({ countriesComponents: "", expandedCountry: false }, () => {
+        this.setState({ countriesComponents: [], expandedCountry: false }, () => {
             this.organizeCountries()
         })
     }
@@ -178,16 +212,22 @@ export default class App extends Component{
     render(){
         // console.log(this.state.countriesComponents)
 
-        return <div id="base" className={this.state.darkMode ? "dark-mode" : ""}>
-            <TopBar toggleFunction={() => this.toggleDarkMode()}/>
-            <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} darkMode={this.state.darkMode}
-            onChange={e => this.filterCountries(e.value)} onChangeSort={e => this.orderCountries(e.value)}></SearchSort>
-            
-            <button id="go-back" className="box-shadow" 
-            style={{ display: this.state.expandedCountry ? 'initial' : 'none' }}
-            onClick={() => this.reorganizeCountries()}><i className="fas fa-arrow-left"></i> Back</button>
-            
-            <div className="countries-grid">{this.state.countriesComponents}</div>
-        </div>
+        return <Router>
+            <div id="base" className={this.state.darkMode ? "dark-mode" : ""}>
+                <TopBar toggleFunction={() => this.toggleDarkMode()} />
+                <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} darkMode={this.state.darkMode}
+                    onChange={e => this.filterCountries(e.value)} onChangeSort={e => this.orderCountries(e.value)}></SearchSort>
+
+                
+                <div className="countries-grid">
+                    <Switch>
+                        <Route exact path="/">
+                            {this.state.countriesComponents}
+                        </Route>
+                        {this.state.countriesRoutes}
+                    </Switch>
+                </div>
+            </div>
+        </Router>
     }
 }
