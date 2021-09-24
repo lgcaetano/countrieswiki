@@ -22,13 +22,13 @@ export default class SearchSort extends Component{
     ]
 
     selectStyles = {
-        control: styles => ({ ...styles, width: '200px', height: '100%', fontWeight: '600'})
+        control: styles => ({ ...styles, width: '175px', height: '100%', fontWeight: '600', boxShadow: '0px 5px 10px 1px var(--dark-gray)'})
     }
 
 
     render(){
         return <div className="search-sort-container">
-            <input type="search" name="search" id="search-bar" placeholder="Search..." onChange={this.props.searchFunction}/>
+            <input type="search" name="search" id="search-bar" placeholder="Search..." onChange={this.props.searchFunction} className="box-shadow"/>
             <Select options={this.orderOptions} styles={this.selectStyles} placeholder="Sort..." onChange={this.props.onChangeSort}></Select>
             <Select options={this.sortOptions} styles={this.selectStyles} placeholder="Filter by region" onChange={this.props.onChange}></Select>
         </div>
