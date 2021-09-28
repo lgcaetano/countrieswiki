@@ -48,7 +48,7 @@ export default class Question extends Component{
         console.log('resposta correta')
         this.props.userAnsweredCorrectly()
         this.setState({ answerClasses: this.state.answerClasses.map((currentClasses, index) => {
-            if(index == this.state.answerIndex)
+            if(index  === this.state.answerIndex)
                 currentClasses += " correct-answer"
             return currentClasses
         }) })
@@ -61,9 +61,9 @@ export default class Question extends Component{
         this.props.userAnsweredWrong()
 
         this.setState({ answerClasses: this.state.answerClasses.map((currentClasses, index) => {
-            if(index == this.state.answerIndex)
+            if(index  === this.state.answerIndex)
                 currentClasses += " correct-answer"
-            else if(index == wrongAnswerIndex)
+            else if(index  === wrongAnswerIndex)
                 currentClasses += " wrong-answer"
             return currentClasses
         }) })
@@ -73,7 +73,7 @@ export default class Question extends Component{
     registerAnswer(index){
         if(this.state.questionOver)
             return
-        if(this.state.answerIndex == index)
+        if(this.state.answerIndex  === index)
             this.registerCorrectAnswer()
         else
             this.registerWrongAnswer(index) 

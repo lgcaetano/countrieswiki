@@ -7,7 +7,7 @@ export default class Quiz extends Component{
     constructor(props){
         super(props)
         this.state = {
-            recordScore: 0,
+            recordScore: localStorage.getItem("record") ? localStorage.getItem("record") : 0,
             currentScore: 0,
             currentQuestion: null, 
             gameStarted: false,
@@ -38,9 +38,15 @@ export default class Quiz extends Component{
     }
 
     registerCorrectAnswer(){
-        this.setState({ currentScore: this.state.currentScore + 1, inBetweenQuestions: true}, () => {
-            this.setState({ recordScore: this.state.currentScore > this.state.recordScore ? this.state.currentScore : this.state.recordScore })
-        })
+        this.setState({ currentScore: this.state.currentScore + 1, inBetweenQuestions: true}, () => this.checkRecord())
+    }
+
+    checkRecord(){
+        if(this.state.currentScore > this.state.recordScore){
+            this.setState({ recordScore: this.state.currentScore }, () => {
+                localStorage.setItem("record", this.state.recordScore)
+            })
+        }
     }
 
     restart(){
@@ -51,13 +57,13 @@ export default class Quiz extends Component{
     render(){
         return <div className="quiz box-shadow">
             
-            <div className={`scoreboard ${this.state.gameStarted ? "" : "faded"}`}>
-                <h3>Score: {this.state.currentScore}</h3>
+            <div className={`scoreboard`}>
+                <h3 className={`${this.state.gameStarted ? "" : "faded"}`}>Score: {this.state.currentScore}</h3>
                 <h3>Record: {this.state.recordScore}</h3>
             </div>
 
             <div className={`initial-quiz-screen ${this.state.gameStarted ? "faded" : ""}`}>
-                <h3 style={{fontSize: "2rem"}}>Flag Quiz!</h3>
+                <h3 style={{fontSize: "2rem", textShadow: "3px 3px var(--boxshadow)"}}>Flag Quiz!</h3>
                 <img src="https://images-na.ssl-images-amazon.com/images/I/61xqGLGBL3L.png" alt=""
                 style={{ height: "75%", margin: "-8%", zIndex: "-1" }} />
                 <button className="start-quiz-button" onClick={() => this.startGame()} >Start</button>

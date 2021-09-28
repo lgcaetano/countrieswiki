@@ -24,6 +24,7 @@ export default class SearchSort extends Component{
     selectStyles = {
         control: (styles, state) => ({ ...styles, width: '175px', height: '100%', fontWeight: '600', background: "var(--elements)",
          border: state.isFocused ? "2px solid white" : "0", borderColor: "white",
+         color: "var(--text)",
          outline: "none",
          "&:hover" : {
              border: "2px solid white",

@@ -7,9 +7,10 @@ import { css } from "@emotion/react";
 import TopBar from "./TopBar";
 import Quiz from "./Quiz";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import ExpandedCountry from "./ExpandedCountry";
 
 function sortCountries(a, b){
-    if(a.name.common == b.name.common)
+    if(a.name.common  === b.name.common)
         return 0
     if(a.name.common > b.name.common)
         return 1
@@ -19,7 +20,7 @@ function sortCountries(a, b){
 
 
 function invertedSortCountries(a, b){
-    if(a.name.common == b.name.common)
+    if(a.name.common  === b.name.common)
         return 0
     if(a.name.common > b.name.common)
         return -1
@@ -29,7 +30,7 @@ function invertedSortCountries(a, b){
 
 
 function sortCountriesRegions(a, b){
-    if(a.region == b.region)
+    if(a.region  === b.region)
         return 0
     if(a.region > b.region)
         return 1
@@ -39,7 +40,7 @@ function sortCountriesRegions(a, b){
 
 
 function sortCountriesArea(a, b){
-    if(a.area == b.area)
+    if(a.area  === b.area)
         return 0
     if(a.area > b.area)
         return -1
@@ -80,14 +81,12 @@ export default class App extends Component{
             countriesArray: []
          }
 
-        console.log(!this.state.darkMode)
         this.toggleDarkMode()
         
         fetch('https://restcountries.com/v3/all', settings)
             .then(response => response.json())
             // .then(response => console.log(response))
             .then(response => this.setState({ countriesArray: response.sort(sortCountries) }, () => this.organizeCountries()))
-            .then(() => console.log((this.state.countriesArray[20])))
             .then(() => this.generateRoutes())
             .then(() => this.setState({ quizComponent: <Quiz data={filterIndependentCountries(this.state.countriesArray)}></Quiz> }))
         
@@ -117,9 +116,9 @@ export default class App extends Component{
                     <i className="fas fa-arrow-left"></i> Back
                 </Link>
 
-                <Country key={country.name.common} data={country}
+                <ExpandedCountry key={country.name.common} data={country}
                 clickHandleFunction={country => this.expandCountry(country)} countryShouldBeExpanded={true}
-                getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)} />
+                getName={country => this.getName(country)} />
 
             </Route>
         }) })
@@ -144,9 +143,8 @@ export default class App extends Component{
             else
                 return false
         }).map(country => {
-            return <Country key={country.name.common} data={country} 
-            clickHandleFunction={country => this.expandCountry(country)}
-            getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)}></Country>
+            return <Country key={country.name.common} data={country}>
+            </Country>
         })} )
     }
 
@@ -155,22 +153,19 @@ export default class App extends Component{
         this.setState( { countriesComponents: this.state.countriesArray.filter(country => {
             if(!value)
                 return true
-            if(country.region == value)
+            if(country.region  === value)
                 return true
             else
                 return false
         }).map(country => {
-            return <Country key={country.name.common} data={country} 
-            clickHandleFunction={country => this.expandCountry(country)}
-            getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)}>
-                {this.expandCountry(country.name.common)}
+            return <Country key={country.name.common} data={country}>
             </Country>
         })} )
     }
 
     getName(countryDigits){
         return this.state.countriesArray.find(country => {
-            return country.cca3 == countryDigits
+            return country.cca3  === countryDigits
         }).name.common
     }
 
@@ -179,39 +174,38 @@ export default class App extends Component{
         // console.log(this.state)
 
         this.setState({ countriesComponents: this.state.countriesArray.map(country => {
-            return <Country key={country.name.common} data={country} 
-            clickHandleFunction={country => this.expandCountry(country)}
-            getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)}></Country>
+            return <Country key={country.name.common} data={country}>
+            </Country>
         }) })
     }
 
-    borderClick(countryName){
+    // borderClick(countryName){
 
-        // console.log(this)
+    //     // console.log(this)
 
-        // console.log(countryName)
+    //     // console.log(countryName)
 
-        const countryObject = this.state.countriesArray.find(country => {
-            return country.name.common == countryName
-        })
+    //     const countryObject = this.state.countriesArray.find(country => {
+    //         return country.name.common  === countryName
+    //     })
 
-        this.setState({ countriesComponents: [<Country key={countryName} data={countryObject} 
-            clickHandleFunction={country => this.expandCountry(country)}
-            getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)}
-            countryShouldBeExpanded={true}></Country>] })
-    }
+    //     this.setState({ countriesComponents: [<Country key={countryName} data={countryObject} 
+    //         clickHandleFunction={country => this.expandCountry(country)}
+    //         getName={country => this.getName(country)} borderClick={country => this.borderClick.bind(this)(country)}
+    //         countryShouldBeExpanded={true}></Country>] })
+    // }
 
-    expandCountry(country){
-        // // this.setState({})
-        // this.searchCountries(country)
-        // this.setState({ expandedCountry: true }, () => this.searchCountries(country))
-        if(this.state.expandedCountry)
-            return
+    // expandCountry(country){
+    //     // // this.setState({})
+    //     // this.searchCountries(country)
+    //     // this.setState({ expandedCountry: true }, () => this.searchCountries(country))
+    //     if(this.state.expandedCountry)
+    //         return
         
-        console.log(this.state)
-        this.setState({ expandedCountry: true })
+    //     console.log(this.state)
+    //     this.setState({ expandedCountry: true })
         
-    }
+    // }
 
     reorganizeCountries(){
 
@@ -252,7 +246,7 @@ export default class App extends Component{
 
         localStorage.setItem("darkmode", this.state.darkMode)
 
-        console.log(localStorage.getItem("darkmode"))
+        // console.log(localStorage.getItem("darkmode"))
         
     }
 
@@ -267,9 +261,10 @@ export default class App extends Component{
                 
 
                 <Route exact path="/">
-                    <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} darkMode={this.state.darkMode}
-                    onChange={e => this.filterCountries(e.value)} onChangeSort={e => this.orderCountries(e.value)}></SearchSort>
-                    {/* {this.state.countriesComponents} */}
+                    <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} 
+                    darkMode={this.state.darkMode}
+                    onChange={e => this.filterCountries(e.value)} 
+                    onChangeSort={e => this.orderCountries(e.value)}></SearchSort>
                 </Route>
                 
                 <div className="countries-grid">

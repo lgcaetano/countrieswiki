@@ -1,7 +1,5 @@
 import React from "react";
 import { Component } from "react";
-import ExpandedLine from "./ExpandedLine";
-import Borders from "./Borders";
 import { Link } from "react-router-dom";
 
 export default class Country extends Component{
@@ -13,37 +11,31 @@ export default class Country extends Component{
         }
     }
     
-    expand(){
-        if(this.state.expandedFlag)
-            return
-        this.setState({ expandedFlag: 1 }, () => null)
-        this.props.clickHandleFunction(this.props.data.name.common)
-    }
 
     render(){
 
         // console.log(this.props.data.borders)
 
-        const nativeNames = this.props.data.name.nativeName
-        let nativeName = ""
+        // const nativeNames = this.props.data.name.nativeName
+        // let nativeName = ""
 
-        if(nativeNames){
-            nativeName = nativeNames[Object.keys(nativeNames)[0]].common ? 
-            nativeNames[Object.keys(nativeNames)[0]].common : this.props.data.name.common
-        }
+        // if(nativeNames){
+        //     nativeName = nativeNames[Object.keys(nativeNames)[0]].common ? 
+        //     nativeNames[Object.keys(nativeNames)[0]].common : this.props.data.name.common
+        // }
 
-        let languages = this.props.data.languages ? Object.values(this.props.data.languages).join(", ") : ""
+        // let languages = this.props.data.languages ? Object.values(this.props.data.languages).join(", ") : ""
 
-        let countryDomain = this.props.data.tld ? this.props.data.tld[0] : ""
+        // let countryDomain = this.props.data.tld ? this.props.data.tld[0] : ""
 
         return <Link to={`/${this.props.data.cca3}`} style={{ textDecoration: 'none', color: 'inherit' }}
-            className={`countryCard box-shadow ${this.props.countryShouldBeExpanded ? "expanded-card" : ""}`}>
-                <div className="img-container"><img src={this.props.data.flags[0]} alt="" /></div>
+            className={`countryCard box-shadow`}>
+                <div className="img-container"><img src={this.props.data.flags[1]} alt="" /></div>
                 <div className="country-description">
 
                     <h5>{this.props.data.name.common}</h5>
 
-                    <ExpandedLine name="Native name" value={nativeName} expanded={this.props.countryShouldBeExpanded} />
+                    {/* <ExpandedLine name="Native name" value={nativeName} expanded={this.props.countryShouldBeExpanded} /> */}
 
                     <div className="card-line">
                         <span>Area:</span> {this.props.data.area}km²<br />
@@ -53,19 +45,19 @@ export default class Country extends Component{
                         <span>Region:</span>       {this.props.data.region}<br />
                     </div>
 
-                    <ExpandedLine name="Sub region" value={this.props.data.subregion} expanded={this.props.countryShouldBeExpanded} />
+                    {/* <ExpandedLine name="Sub region" value={this.props.data.subregion} expanded={this.props.countryShouldBeExpanded} />
 
-                    <ExpandedLine name="Top Level Domain" value={countryDomain} expanded={this.props.countryShouldBeExpanded} />
+                    <ExpandedLine name="Top Level Domain" value={countryDomain} expanded={this.props.countryShouldBeExpanded} /> */}
 
                     <div className="card-line">
                         <span>Capital:</span> {this.props.data.capital ? this.props.data.capital : ""}
                     </div>
-
+{/* 
                     <ExpandedLine name="Languages" value={languages} expanded={this.props.countryShouldBeExpanded} />
 
                     <ExpandedLine name="Borders" value={this.props.data.borders ? <Borders
                         borderCountries={this.props.data.borders} borderClick={this.props.borderClick}
-                        getName={this.props.getName} /> : ""} expanded={this.props.countryShouldBeExpanded} />
+                        getName={this.props.getName} /> : ""} expanded={this.props.countryShouldBeExpanded} /> */}
 
                 
             </div>
