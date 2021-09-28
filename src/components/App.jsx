@@ -73,7 +73,16 @@ export default class App extends Component{
         top: 30vh;
         `;
 
-        this.state = { expandedCountry: false, countriesComponents: <BeatLoader css={loaderCss} size={50}></BeatLoader>, darkMode: false, countriesArray: [] }
+        this.state = {
+            expandedCountry: false,
+            countriesComponents: <BeatLoader css={loaderCss} size={50} color="var(--text)"></BeatLoader>, 
+            darkMode: !localStorage.getItem("darkmode"), 
+            countriesArray: []
+         }
+
+        console.log(!this.state.darkMode)
+        this.toggleDarkMode()
+        
         fetch('https://restcountries.com/v3/all', settings)
             .then(response => response.json())
             // .then(response => console.log(response))
@@ -212,8 +221,41 @@ export default class App extends Component{
     }
 
     toggleDarkMode(){
-        this.setState({ darkMode: !this.state.darkMode })
+
+        const root = document.querySelector(':root')
+        let variables = getComputedStyle(root)
+        
+        this.state.darkMode = !this.state.darkMode
+
+        let darkModeSettings = { 
+            text: variables.getPropertyValue('--white-dark-mode'),
+            bkgd: variables.getPropertyValue('--dark-mode-background'),
+            elements: variables.getPropertyValue('--dark-mode-elements'),
+            boxshadow: variables.getPropertyValue('--dark-mode-background'),
+        }
+
+        let lightModeSettings = { 
+            text: variables.getPropertyValue('--light-mode-text'),
+            bkgd: variables.getPropertyValue('--light-gray'),
+            elements: variables.getPropertyValue('--white-dark-mode'),
+            boxshadow: variables.getPropertyValue('--dark-gray'),
+        }
+
+        let newSettings = this.state.darkMode ? darkModeSettings : lightModeSettings
+        
+        
+
+        root.style.setProperty('--text', newSettings.text)
+        root.style.setProperty('--bkgd', newSettings.bkgd)
+        root.style.setProperty('--elements', newSettings.elements)
+        root.style.setProperty('--boxshadow', newSettings.boxshadow)
+
+        localStorage.setItem("darkmode", this.state.darkMode)
+
+        console.log(localStorage.getItem("darkmode"))
+        
     }
+
 
     render(){
         // console.log(this.state.countriesComponents)

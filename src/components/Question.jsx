@@ -90,19 +90,19 @@ export default class Question extends Component{
                 <h5>To which country does this flag belong to?</h5>
                
                 <div className="answers-container">
-                    <div className={`question-answer ${this.state.answerClasses[0]}`}
+                    <div className={`question-answer ${this.state.answerClasses[0]} box-shadow`}
                         onClick={() => this.registerAnswer(0)}>
                         {this.props.data[this.state.countryIndexes[0]].name.common}
                     </div>
-                    <div className={`question-answer ${this.state.answerClasses[1]}`}
+                    <div className={`question-answer ${this.state.answerClasses[1]} box-shadow`}
                         onClick={() => this.registerAnswer(1)}>
                         {this.props.data[this.state.countryIndexes[1]].name.common}
                     </div>
-                    <div className={`question-answer ${this.state.answerClasses[2]}`}
+                    <div className={`question-answer ${this.state.answerClasses[2]} box-shadow`}
                         onClick={() => this.registerAnswer(2)}>
                         {this.props.data[this.state.countryIndexes[2]].name.common}
                     </div>
-                    <div className={`question-answer ${this.state.answerClasses[3]}`}
+                    <div className={`question-answer ${this.state.answerClasses[3]} box-shadow`}
                         onClick={() => this.registerAnswer(3)}>
                         {this.props.data[this.state.countryIndexes[3]].name.common}
                     </div>

@@ -65,10 +65,10 @@ export default class Quiz extends Component{
 
             {this.state.currentQuestion}
 
-            <button className={`quiz-button ${this.state.inBetweenQuestions ? "" : "faded"}`} 
+            <button className={`quiz-button box-shadow ${this.state.inBetweenQuestions ? "" : "faded"}`} 
             onClick={() => this.getQuestion()}>Next Question <i className="fas fa-arrow-right"></i></button>
 
-            <button className={`quiz-button ${this.state.gameOver ? "" : "faded" }` } 
+            <button className={`quiz-button box-shadow ${this.state.gameOver ? "" : "faded" }` } 
             onClick={() => this.restart()}><i className="fas fa-redo-alt"></i> Restart</button>
         </div>
     }

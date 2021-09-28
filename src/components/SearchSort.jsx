@@ -22,7 +22,7 @@ export default class SearchSort extends Component{
     ]
 
     selectStyles = {
-        control: (styles, state) => ({ ...styles, width: '175px', height: '100%', fontWeight: '600',
+        control: (styles, state) => ({ ...styles, width: '175px', height: '100%', fontWeight: '600', background: "var(--elements)",
          border: state.isFocused ? "2px solid white" : "0", borderColor: "white",
          outline: "none",
          "&:hover" : {
@@ -30,12 +30,13 @@ export default class SearchSort extends Component{
              boxShadow: "none"
          },
          "&:focus" : {
-            border: "2px solid white",
+            // border: "2px solid white",
             boxShadow: "none",
             outline: "none"
          }
     }),
-        option: styles => ({ ...styles, color: this.props.darkMode ? 'white' : 'black'})
+        option: styles => ({ ...styles, background: "var(--elements)", color: "var(--text)"}),
+        menu: styles => ({ ...styles, background: "var(--elements)" })
     }
 
 
