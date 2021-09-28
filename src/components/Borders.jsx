@@ -12,7 +12,7 @@ export default class Borders extends Component{
                 
                 let countryName = this.props.getName(country)
 
-                return <Link to={`/${country}`}className="border-button" onClick={() => this.props.borderClick(countryName)} key={country}>
+                return <Link to={`/${country}`}className="border-button" key={country}>
                     {countryName}
                 </Link >
             })
