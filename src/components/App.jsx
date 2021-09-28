@@ -5,6 +5,7 @@ import SearchSort from "./SearchSort";
 import { BeatLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import TopBar from "./TopBar";
+import Quiz from "./Quiz";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function sortCountries(a, b){
@@ -46,7 +47,11 @@ function sortCountriesArea(a, b){
         return 1
 }
 
-
+function filterIndependentCountries(countriesArray){
+    return countriesArray.filter(country => {
+        return country.independent
+    })
+}
 
 
 
@@ -75,6 +80,7 @@ export default class App extends Component{
             .then(response => this.setState({ countriesArray: response.sort(sortCountries) }, () => this.organizeCountries()))
             .then(() => console.log((this.state.countriesArray[20])))
             .then(() => this.generateRoutes())
+            .then(() => this.setState({ quizComponent: <Quiz data={filterIndependentCountries(this.state.countriesArray)}></Quiz> }))
         
             // console.log(this.state.countriesArray)
         
@@ -95,7 +101,7 @@ export default class App extends Component{
 
         this.setState({ countriesRoutes: this.state.countriesArray.map(country => {
 
-            return <Route exact path={`/${country.cca3}`}>
+            return <Route exact path={`/${country.cca3}`} key={country.name.common}>
 
                 <Link to="/" id="go-back" className="box-shadow"
                     onClick={() => this.reorganizeCountries()}>
@@ -214,10 +220,15 @@ export default class App extends Component{
 
         return <Router>
             <div id="base" className={this.state.darkMode ? "dark-mode" : ""}>
+                
                 <TopBar toggleFunction={() => this.toggleDarkMode()} />
-                <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} darkMode={this.state.darkMode}
-                    onChange={e => this.filterCountries(e.value)} onChangeSort={e => this.orderCountries(e.value)}></SearchSort>
+                
 
+                <Route exact path="/">
+                    <SearchSort searchFunction={e => this.searchCountries.bind(this)(e.target.value)} darkMode={this.state.darkMode}
+                    onChange={e => this.filterCountries(e.value)} onChangeSort={e => this.orderCountries(e.value)}></SearchSort>
+                    {/* {this.state.countriesComponents} */}
+                </Route>
                 
                 <div className="countries-grid">
                     <Switch>
@@ -225,6 +236,9 @@ export default class App extends Component{
                             {this.state.countriesComponents}
                         </Route>
                         {this.state.countriesRoutes}
+                        <Route exact path="/quiz">
+                            {this.state.quizComponent}
+                        </Route>
                     </Switch>
                 </div>
             </div>

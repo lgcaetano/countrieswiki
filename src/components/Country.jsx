@@ -38,7 +38,7 @@ export default class Country extends Component{
 
         return <Link to={`/${this.props.data.cca3}`} style={{ textDecoration: 'none', color: 'inherit' }}
             className={`countryCard box-shadow ${this.props.countryShouldBeExpanded ? "expanded-card" : ""}`}>
-                <div className="img-container"><img src={this.props.data.flags[1]} alt="" /></div>
+                <div className="img-container"><img src={this.props.data.flags[0]} alt="" /></div>
                 <div className="country-description">
 
                     <h5>{this.props.data.name.common}</h5>
