@@ -12,17 +12,16 @@ export default class Quiz extends Component{
             currentQuestion: null, 
             gameStarted: false,
             inBetweenQuestions: false,
-            gameOver: false
+            gameOver: false,
+            pastAnswers: []
         }
     }
 
     getQuestion(){
 
         
-        let newQuestion = <Question data={this.props.data} userAnsweredCorrectly={() =>this.registerCorrectAnswer()}
-        userAnsweredWrong={() => this.registerWrongAnswer()} key={Math.random()}></Question>
-        
-        console.log(newQuestion, this.state.currentQuestion)
+        let newQuestion = <Question data={this.props.data} userAnsweredCorrectly={(country) =>this.registerCorrectAnswer(country)}
+        userAnsweredWrong={(country) => this.registerWrongAnswer(country)} key={Math.random()} pastAnswers={this.state.pastAnswers}></Question>
 
         this.setState({ currentQuestion: newQuestion })
         this.setState({ inBetweenQuestions: false })
@@ -33,11 +32,17 @@ export default class Quiz extends Component{
         this.getQuestion()
     }
 
-    registerWrongAnswer(){
+    registerWrongAnswer(correctAnswer){
+        
+        this.state.pastAnswers.push(correctAnswer)
+
         this.setState({ gameOver: true })
     }
 
-    registerCorrectAnswer(){
+    registerCorrectAnswer(correctAnswer){
+
+        this.state.pastAnswers.push(correctAnswer)
+
         this.setState({ currentScore: this.state.currentScore + 1, inBetweenQuestions: true}, () => this.checkRecord())
     }
 
@@ -50,7 +55,7 @@ export default class Quiz extends Component{
     }
 
     restart(){
-        this.setState({ currentScore: 0, gameOver: false })
+        this.setState({ currentScore: 0, gameOver: false, pastAnswers: []})
         this.getQuestion()
     }
 

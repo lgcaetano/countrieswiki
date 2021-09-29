@@ -14,39 +14,48 @@ export default class Question extends Component{
 
         super(props)
 
-        console.log(props.data[20])
-
         const randomIndexes = []
         let randomNumber 
 
+        this.state = {
+            answerIndex: getRandomNumberBetween(0, 3),
+            answerClasses: ["", "", "", ""],
+            questionOver: false,
+            imgSrc: ""
+        }
+
+        this.state.countriesArray = props.data.filter(country => {
+            if(props.pastAnswers.includes(country.name.common))
+                return 0
+            return 1
+        })
+
+
         for(let i = 0; i < 4; i++){
-            randomNumber = getRandomNumberBetween(0, props.data.length - 1)
+            randomNumber = getRandomNumberBetween(0, this.state.countriesArray.length - 1)
+
             if(randomIndexes.includes(randomNumber)){
-                console.log(randomNumber)
                 i--
-            }
-            else
+            } else
                 randomIndexes.push(randomNumber)
         }
 
-        this.state = { answerIndex: getRandomNumberBetween(0, 3),
-                answerClasses: ["", "", "", ""], 
-                questionOver: false,
-                imgSrc: ""
-            }
+        console.log(this.state.countriesArray.length)
 
-
-        this.state.answerCountry = props.data[randomIndexes[this.state.answerIndex]]
-        this.state.imgSrc = this.state.answerCountry.flags[0]
+        this.state.answerCountry = this.state.countriesArray[randomIndexes[this.state.answerIndex]]
+        this.state.imgSrc = this.state.answerCountry.flags[1]
 
         this.state.countryIndexes = randomIndexes
 
     }
 
     registerCorrectAnswer(){
+
         this.setState({ questionOver: true })
-        console.log('resposta correta')
-        this.props.userAnsweredCorrectly()
+
+        this.props.userAnsweredCorrectly(this.state.answerCountry.name.common)
+
+
         this.setState({ answerClasses: this.state.answerClasses.map((currentClasses, index) => {
             if(index  === this.state.answerIndex)
                 currentClasses += " correct-answer"
@@ -58,7 +67,7 @@ export default class Question extends Component{
         
         this.setState({ questionOver: true })
         
-        this.props.userAnsweredWrong()
+        this.props.userAnsweredWrong(this.state.answerCountry.name.common)
 
         this.setState({ answerClasses: this.state.answerClasses.map((currentClasses, index) => {
             if(index  === this.state.answerIndex)
@@ -80,7 +89,6 @@ export default class Question extends Component{
     }
 
     render(){
-        console.log(this.state.answerClasses)
 
         return <div className="question-container">
             <div className="quiz-img-container">
@@ -92,19 +100,19 @@ export default class Question extends Component{
                 <div className="answers-container">
                     <div className={`question-answer ${this.state.answerClasses[0]} box-shadow`}
                         onClick={() => this.registerAnswer(0)}>
-                        {this.props.data[this.state.countryIndexes[0]].name.common}
+                        {this.state.countriesArray[this.state.countryIndexes[0]].name.common}
                     </div>
                     <div className={`question-answer ${this.state.answerClasses[1]} box-shadow`}
                         onClick={() => this.registerAnswer(1)}>
-                        {this.props.data[this.state.countryIndexes[1]].name.common}
+                        {this.state.countriesArray[this.state.countryIndexes[1]].name.common}
                     </div>
                     <div className={`question-answer ${this.state.answerClasses[2]} box-shadow`}
                         onClick={() => this.registerAnswer(2)}>
-                        {this.props.data[this.state.countryIndexes[2]].name.common}
+                        {this.state.countriesArray[this.state.countryIndexes[2]].name.common}
                     </div>
                     <div className={`question-answer ${this.state.answerClasses[3]} box-shadow`}
                         onClick={() => this.registerAnswer(3)}>
-                        {this.props.data[this.state.countryIndexes[3]].name.common}
+                        {this.state.countriesArray[this.state.countryIndexes[3]].name.common}
                     </div>
                 </div>
             </div>
