@@ -219,7 +219,6 @@ export default class App extends Component{
         const root = document.querySelector(':root')
         let variables = getComputedStyle(root)
         
-        this.state.darkMode = !this.state.darkMode
 
         let darkModeSettings = { 
             text: variables.getPropertyValue('--white-dark-mode'),
@@ -235,16 +234,20 @@ export default class App extends Component{
             boxshadow: variables.getPropertyValue('--dark-gray'),
         }
 
-        let newSettings = this.state.darkMode ? darkModeSettings : lightModeSettings
-        
-        
+        this.setState({ darkMode: !this.state.darkMode }, () => {
 
-        root.style.setProperty('--text', newSettings.text)
-        root.style.setProperty('--bkgd', newSettings.bkgd)
-        root.style.setProperty('--elements', newSettings.elements)
-        root.style.setProperty('--boxshadow', newSettings.boxshadow)
+            let newSettings = this.state.darkMode ? darkModeSettings : lightModeSettings
 
-        localStorage.setItem("darkmode", this.state.darkMode)
+            root.style.setProperty('--text', newSettings.text)
+            root.style.setProperty('--bkgd', newSettings.bkgd)
+            root.style.setProperty('--elements', newSettings.elements)
+            root.style.setProperty('--boxshadow', newSettings.boxshadow)
+
+            localStorage.setItem("darkmode", this.state.darkMode)
+        })
+ 
+
+        
 
         // console.log(localStorage.getItem("darkmode"))
         
