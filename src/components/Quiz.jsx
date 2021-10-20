@@ -7,7 +7,7 @@ export default class Quiz extends Component{
     constructor(props){
         super(props)
         this.state = {
-            recordScore: localStorage.getItem("record") ? localStorage.getItem("record") : 0,
+            recordScore: !isNaN(localStorage.getItem("record")) ? parseInt(localStorage.getItem("record")) : 0,
             currentScore: 0,
             currentQuestion: null, 
             gameStarted: false,
