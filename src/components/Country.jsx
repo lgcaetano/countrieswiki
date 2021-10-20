@@ -2,6 +2,17 @@ import React from "react";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 
+
+function addCommas(number){
+    console.log(number)
+    let numberString = number.toString()
+    console.log(numberString)
+    for(let i =  numberString.length - 4; i >= 0; i-=3){
+        numberString = numberString.substring(0, i+1) + ',' + numberString.substring(i+1)
+    }
+    return numberString
+}
+
 export default class Country extends Component{
 
     constructor(props){
@@ -38,7 +49,11 @@ export default class Country extends Component{
                     {/* <ExpandedLine name="Native name" value={nativeName} expanded={this.props.countryShouldBeExpanded} /> */}
 
                     <div className="card-line">
-                        <span>Area:</span> {this.props.data.area}km²<br />
+                        <span>Population:</span> {addCommas(this.props.data.population)}<br />
+                    </div>
+
+                    <div className="card-line">
+                        <span>Area:</span> {addCommas(this.props.data.area)}km²<br />
                     </div>
 
                     <div className="card-line">
