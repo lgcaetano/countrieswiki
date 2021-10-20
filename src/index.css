@@ -11,7 +11,9 @@
 --boxshadow: hsl(207, 26%, 17%);
 }
 
-
+html{
+  overflow: hidden;
+}
 
 body{
   position: absolute;
